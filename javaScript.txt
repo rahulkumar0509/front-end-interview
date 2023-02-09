@@ -1,0 +1,599 @@
+Stack
+===================
+stack is a runtime space where the order of all the function execution get defined.
+fo e.g., we have function multiplication(x,y){console.log(x*y)} multiplication(5,6);
+so in call stack, it will be main() // 1st element
+							multiplication(4,5)	// 2nd
+							console.log()	// 3rd
+and then it will pop up every elements.
+
+web api
+====================
+setTimeout returns callback and get stored in webapis which is not part of v8
+
+task queue
+====================
+task queue is a spcae which holds all the callback which get completed in webapi.
+
+Event loop
+====================
+Event loop pushes the task present int task queue into stack only when stack is empty.
+And event loop send the task from task queue one by one which also means if we have 5 setTimout with 1000 delays it doesnot means that all the setTimeout will give the output just after 1 secont at a time.
+so settimeout 0 also will have to wait for stack to be clear.
+
+
+this.name = 'rahul'; setTimeout(function(){console.log(this.name) // error because this belong to anonymous function }) so better to use arrow function because it don't have it's own this object
+
+some color code have transparency(background: rgba(0,0,0,0.05);) while some don't background: rgb(242,242,242);
+
+wait for deactivate service while making any http call in angular
+
+how to create dynamic key in object  {[dynamicKey]: 'hello'}
+how to get timestamp (+ new Date())
+how to break foreach of javascript // use some(true) and every(false) && array.find
+check if object has particular key//  'key' in object .hasOwnProperty('')
+return only one error		// use pipe and return only one from error object
+
+sorting searching with array of objects
+
+Create Dom element in javascript
+===================================
+	create new element:
+		var elem = document.createElement('<p>');
+		var textNode  = document.createTextNode('hello !');
+		
+		elem.appendChild(textNode);
+		
+		Now add this new element to existing one
+		 var exstElement = document.getElementById('name');
+		 exstElement.appendChild(elem);
+		 exstElement.insertBefore(elem);
+		 exstElement.remove()
+		 exstElement.removeChild(elem);
+
+Array Map VS Filter VS Reduce VS Find
+==================================
+	Array.Map
+	-----------
+		It is an array's method which can be used to call a function for each element of an array. for e.g,
+			var arr = [12, 13, 14, 23, 56, 45];
+			
+			arr.map(function(data){
+				return data + 12;
+			});
+		Here, it runs the map function for each element of an array and return the new updated array.
+		In case of Conditional Statemnet it do retutn boolean value for each element. 
+		
+		So, the output is [false, true, true...]
+		
+	Array.Filter
+	-------------
+		This method can be used to filter the array and return some data as per condition from the same array. for e.g.,
+			var arr = [121, 242, 223, 126, 275, 344];
+			arr.filter(function(data){
+				return data > 200;
+			})
+			
+		Here, it returns the filtered data from the array as per condition defined by us.
+			So, the output is [242, 223, 275, 344]
+		
+	Array.Reduce
+	-------------
+		The reduce() method executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
+		The reducer function takes four arguments:
+
+			Accumulator (acc)
+			Current Value (cur)
+			Current Index (idx)
+			Source Array (src)
+		
+		For example:
+			var array = [10, 20, 30, 40, 50];
+			array.reduce(function(acc, cur, idx, src){
+				return acc + cur;
+			})
+
+
+How to iterate Objects in javascript
+=====================================
+
+	Using for In loop.
+	
+	let newObj = {'name': 'rahul', 'age': 30, 'sex': 1};
+	
+	for(let i in newObj){console.log(newObj[i]);}
+
+Object.freeze()
+=================================
+	let obj = {'name':'rahul'}
+	obj.name = 'kumar'
+	Object.freeze(obj)			// 		it will freeze the object obj and we can't update the value of 'name'.
+								//		bit it will not throw error.
+	obj.name = 'Shaktiman'		//		it do not update the obj's name value.
+
+
+Map vs WeakMap Object
+===============================================================================================
+	In ES6, we can create a Map object where key can be an object or array.
+	let myMap = new Map();
+	let key = {'name': 'rahul'};
+	myMap.set(key, 'Full Name');
+	
+	myMap.get(key);
+	
+	delete key;
+	
+	Also known as Strong Map because when we even delete the key of the Map object, the reference would be there in Map and do not get garbage collected.
+	
+	WeakMap:
+		let my wmap = new WeakMap();
+		let key = {'age': 30};
+		wmap.set(key, 'Age of person');
+		
+		delete key;
+		
+		In WeakMap, if we delete the key of WeakMap object then it will get garbage collected and do not hold the reference in WeakMap object.
+
+
+How to load 4 page one by one 
+	<input button onclick = "window.location.href = '/../product.html' " />  
+
+Best Practices/Performances/Code Optimization:
+	1. declare local and avoid global variable
+	2. declare on top
+	3. initialize variables
+	4. Don't use new Object, use {}, "", false, []
+	5. use ===
+	6. avoid activity in loop
+	7. reduce dom access and assign in variable
+	
+Event Bubbling--Event Capturing and Event Traget
+	event.preventDefault, event.stopPropagation and event.stopImmediatePropagation
+	
+Pop up boxes: 3
+	alert("Warning: Leave the site")
+	confirm("click ok or cancel return true or false")
+	prompt("Enter your name", "Default Name") // return name or null
+	
+Closure:
+-----------------------
+	closure is used to create public, private and privileged method
+	a closure is simply a function defined within another function. However, the power of closures is derived from the fact that the inner function remembers the environment in which it was created. In other words, the inner function has access to the outer function’s variables and parameters.
+	https://www.crockford.com/javascript/private.html
+	
+	function f() {
+	var x = 10;
+	return () => {
+		console.log(x+5);			// inside scope of function we can see the closure
+		}
+	}
+	console.dir(f());
+	
+	
+	for(let i =0; i<3; i++){
+		setTimeout( function(){		// output: 0, 1, 2
+			console.log(i)			// when var i, output: 3 3 3
+		}, 1000);			
+	}
+	
+	let multiply = function(x){
+		return function(y){
+			return function(z){
+				console.log(x * y * z);			// closure and currying example
+			}
+		}
+	}
+	multiply(2)(3)(4);
+	
+	
+	var count = (function(){
+		var x = 0;
+		return function(){
+			x = x+1;
+			console.log(x);
+		}
+	})();
+	setInterval(function(){
+		count();
+	},1000);
+	
+	
+	when you dn;t know the number of argument
+	-----------------------------------------------
+	function sum() {
+		var s = 0;
+		for (var i=0; i < arguments.length; i++) {
+			s += arguments[i];
+		}
+		return s;
+	}
+	
+	2nd way
+	-----------------
+	let sum1 = (...args)=>args.reduce((total, num)=>total+=num)
+	console.log(sum1(2,3,4,5));
+	
+	backtick or grave accent can be used to pass function argument
+	function abc(){return 'hello';}
+	abc `hiiii`   // hiiii
+	
+	
+cool tricks:
+---------------
+document.body.contentEditable = true
+
+__proto__		// it says who is the creator
+'x'.__proto__		// string
+'x'.__proto__.__proto__		// Object
+'x'.__proto__.__proto__.__proto__		// null
+
+
+Call, apply and bind
+------------------------------	
+	The call function allows for a function belongs to one object to be assigned and call for another object.
+	call() provides a new value of this to the function/method. With call, you can write a method once and then inherit it in another object.
+	
+	Example - 1
+	--------------------------------
+	function Product(name, price) {
+		this.name = name;
+		this.price = price;
+		console.log("Product name is: "+this.name+" and price is: "+this.price);
+	}
+	function Food(name, price) {
+		Product.call(this, name, price);		// first argument must be this.
+		this.category = 'food';
+	}
+	new Food('cheese', 5);
+
+	Example - 2
+	----------------
+	function greet(){
+		console.log([this.name, 'knows', this.language, 'language'].join(' '));
+	}
+	var person={
+		'name': 'rahul',
+		'language': 'english'
+	}
+	greet.call(person);
+
+	The fundamental difference is that call() accepts an argument list, while apply() accepts a single array of arguments.
+	var array = ['a', 'b'];
+	var elements = [0, 1, 2];
+	array.push.apply(array, elements);
+	console.info(array)
+	
+	Bind function
+	------------------
+	Bind function return the function where we can preset some value and later we can call that function to get the resilt with preset value.
+	For example:
+	
+
+	function addArguments(arg1, arg2) {
+		return arg1 + arg2
+	}
+
+	var list1 = list(1, 2, 3); // [1, 2, 3]
+
+	var result1 = addArguments(1, 2); // 3
+
+	// Create a function with a preset first argument.
+	var addThirtySeven = addArguments.bind(null, 37); 
+
+	var result2 = addThirtySeven(5); 
+	// 37 + 5 = 42 
+
+	var result3 = addThirtySeven(5, 10);
+	// 37 + 5 = 42 , second argument is ignored
+
+Inerface and enum
+------------------------------
+
+
+class and OOP concept in js
+-------------------------------	
+	Class before ES2015:-
+		function Person(first, last){
+			this.firstName = first;
+			this.lastName = last;
+		}
+		
+		var user = new Person();
+		user.firstName = 'rahul';
+		user.lastName = 'kumar';
+		alert(user.firstName+" "+user.lastName);
+		
+	Objects:
+		var person = {};
+		var person = new person();
+		var persion = Object.create();
+		
+		Object.assign(target, source) 				//  copy the source to target
+	
+	Function:
+		function hoisting only works with function declaration and not with function expression.
+		
+		function sayHello(){
+			alert("Hello user !");					//	function declaration
+		}
+	
+		var hello = function(){
+			alert("Hello user !");					//	function expression
+		}
+		
+		arrow function:
+		
+			
+	Methods in class:
+		A method is a function that belongs to an object.
+		
+		Person.prototype.greet(){
+			alert("Greeting Madam !");
+		}
+		
+		var person = new Person('rahul','kumar');
+		person.greet();
+			
+	Inheritance:
+		JavaScript only supports single class inheritance
+		Inheritance is a process where we define the parent and child class where child class inherits parent class property.
+		
+		function Person(){
+			this.name = 'rahul';
+		}
+		Person.prototype.greet = function(){
+			console.log("Hello "+this.name)
+		}
+		
+		function Student(){			
+			Person.call(this);							// Call the parent constructor
+			this.name = 'kumar';
+		}
+		Student.prototype.constructor = Student;		// correct the constructor pointer because it points to Person
+		Student.prototype.greet = function(){
+			console.log("HI "+this.name)
+		}
+
+		var student1 = new Student();
+		student1.greet();
+		
+	Encapsulation:
+		In the previous example, Student does not need to know how the Person class’s walk() method is implemented, but still can use that method; the Student class doesn’t need to explicitly define that method unless we want to change it. This is called encapsulation, by which every class inherits the methods of its parent and only needs to define things it wishes to change.	
+		
+	Polymorphism and Abstraction:
+		
+		
+		
+ES2020:
+---------------------------		
+	1. Default, Rest & Spread operator:
+		JavaScript function allows any number of arguments to be passed regardless of number of parameters declared in function definition.
+		
+		Extended parameter handling:
+			Default, Rest & Spread operator is designed to handle the extended parameter.
+			
+		Default:
+			we can define the default value of parameter in function definition.
+				function person(name="john", age=30){
+					console.log(name+" "+age);
+				}
+				person("rahul", 31)
+				
+		Rest parameter:
+			Rest parameter is denoted by three dots ... preceding by parameter name.
+			It can be used to get all the parameter passed by function call at function definition. It simply get all the arguments into an array.
+			function sum(...args){
+				let sum=0;
+				args.forEach((num)=>{
+					sum+=num;
+				})
+				return sum;
+			}
+			sum(1,2,3,4,5);
+			
+			No other named arguments can follow in the function declaration
+			function sum(…numbers, last) { // causes a syntax error
+			
+		Spread operator:
+			It allows to split an array into single parameter and can be passed in function call.
+			var arg = [1,2,3,4,5,5,6,6,7,7];
+			sum(...arg);
+			
+			function sum(a,b,c){
+				return a+b+c;
+			}
+			
+			console.log(sum(…arg, 3)); // 6
+			
+			In ES5:
+				console.log(sum.apply(undefined, args));
+			
+	2. Destructuring:
+		Array Destructuring:
+			It is way of breaking the array and assign the values into variables.
+			let arr = [1,2,3,4,5,6,7,8];
+			[a,b,c,d,,f,g,h,i,j] = arr;			//	output: a:1,b:2,c:3, d:4, f:6, j: undefined
+			
+			nested array Destructuring is also possible
+			let grr = [98,78,arr]
+			[c,v,[e,r]] = grr
+		
+		Object Destructuring:
+			let point = {
+			  x: 1,
+			  y: 2
+			};
+			let { x: a, y: b } = point;
+
+			let mixed = {
+			  one: 1,
+			  two: 2,
+			  values: [3, 4, 5]
+			};
+			let { one: a, two: b, values: [c, , e] } = mixed;
+			console.log(a); // 1
+			console.log(b); // 2
+			console.log(c); // 3
+			console.log(e); // 5
+		
+	3. variables:
+		"Let" and "Const" can be used to define variables and it provides the "Block scope" and do not hoisted.
+		"Const" can be used to define the constant variables. we can not re assign new value to const and will give error.
+			const c;			here c=undefined
+			c=1					here c=1 ; trying to re-assign
+			console.log(c);missing initializer in const declaration.
+			But you can modify the object defined as const but not re-assign.
+			const c =[1,2] and then c.push(3) is ok. 
+		"Var" have functional scope while let have block scope(if or for loop)
+		"Var" get hoisted, hoisted means get declared at top but not initialed with any value.
+	
+	4. null vs undefined
+		meaning of both is empty value.
+		when we declare any variable but do not assign any value then JS will put undefined in the placeholder.
+		But when we want to define a variable without any value we put it as null, actually we can also assign undefined.
+		typeof(undefined) = undefined
+		typeof(null) = object
+
+	5. function expression:
+		var df = function(){ 		// assigning anonymous function to variable 
+			console.log("asdf")
+		}
+	
+	6. function declaration:
+		function abc(){
+			console.log("dsfdsfds")
+		}
+		
+	7. Set and Map instead of Array and Object:
+		"Set" can be used instead of Array as primitive data to store the iterable object.
+		It do not add duplicate value, if any present in iterable it will simply remove that.
+		
+		Set Operations:
+			let mySet = new Set()	or 	new Set([1,2,3,4,5])
+			mySet.add(45);
+			mySet.add('hey you');
+			mySet.add({key: value})
+			
+			mySet.has(2)		//	returns bollean
+			mySet.delete(2)	
+			mySet.size 			// return size of set
+			
+			mySet.clear()		// empt the set
+			mySet.forEach(function(value) {
+				console.log(value);
+			});
+			
+			
+			======================
+			[...mySet]			//	convert into array 
+			======================
+			
+		Map Operations:
+			The map() method creates a new array with the results of calling a function for every array element.
+				var numbers = [65, 44, 12, 4];
+				var newarray = numbers.map(myFunction)
+
+				function myFunction(num) {
+				  return num * 10;
+				}
+
+				document.getElementById("demo").innerHTML = newarray;
+			
+			var map = new Map(); //Empty Map
+			var map = new Map([[1,2],[2,3]]); // map = {1=>2, 2=>3}			
+			
+			map.get(key)		returns value of key
+			map.has(key)		return bollean if key is present or not
+			map.set(key,value)  
+			
+			delete obj.id;		In object case
+			map.delete(key)
+			map.forEach
+
+			
+		Shit/unShift method:
+		
+		
+		
+	8. arrow function:
+		Arrow function don't have it's own scope it referes to scope where it get defined.
+		Arriw function dont have its own this so we can se it to set the value into current scope of fucntion where it has been defined.
+		let sum = (...arg)=>{arg.reduce((total, item)=>total+=item)}
+		alert(sum([1,3,4,56,65,6,4]));
+	
+	
+	9. class keyword:
+		
+		class Meetup{
+			constructor(name, location){
+				this._name = name;
+				this._location = location;
+				console.log("inside Meetup constructor");
+			}
+			organise() {
+				console.log('Organising Meetup');
+			}
+			static getMeetupFounderDetails() {
+				console.log("Meetup Founder Details");
+			}
+			start(){
+				console.log(this._name+' Meetup will be happens at '+this._location);
+			}
+			get name() {				
+				return this._name;
+			}
+			set name(val) {				
+				this._name = val;
+			}
+			
+		}
+		class TechMeet extends Meetup {
+			constructor() {
+				super();
+				console.log("inside TechMeet constructor");
+			}
+			organise() {
+				//super.organise();
+				console.log('Organising TechMeet');
+				super.organise();
+			}
+		}
+		
+		let js = new TechMeet();
+			// inside Meetup constructor
+			// inside TechMeet constructor
+		
+		js.organise();
+			/* Output: 
+			Organising TechMeet
+			Organising Meetup */
+
+		
+		TechMeet.getMeetupFounderDetails();
+			/* Output: 
+			TechMeet Founder Details
+			Meetup Founder Details */	
+			
+			
+		console.log(js instanceof TechMeet);  // true
+		console.log(js instanceof Meetup);    // true
+		console.log(js instanceof Object);    // true	
+
+
+
+	10. Nullish coalescing assignment (??=)
+	--------------------------------------
+	?? it checks of value is null or undefined.
+	leftOperand ?? rightOperand: it return rightOperand when the leftOperand is null or empty.
+	let x = "";
+	let y = x??42
+	output: "" (as the empty string is not null or undefined)
+			
+
+	11. Array.flat
+	=================================
+	The flat() method creates a new array by flattening a nested array.
+	const myArr = [[1,2],[3,4],[5,6]];
+	const newArr = myArr.flat();
+	output: [1,2,3,4,5,6]
+	but it do not flat more than 2 level nested array

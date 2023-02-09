@@ -1,0 +1,972 @@
+https://help.github.com/en/github/working-with-github-pages/about-github-pages
+https://www.npmjs.com/package/angular-cli-ghpages 
+https://angular.io/guide/deployment
+https://devblogs.microsoft.com/premier-developer/angular-how-to-editable-config-files/
+
+
+Convert an object to array
+=============================
+	https://www.geeksforgeeks.org/how-to-convert-an-object-to-an-array-of-key-value-pairs-in-javascript/
+
+Design generic angular application
+====================================
+	1. Dynamically load the component
+	---------------------------------
+		@import {ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+		
+		step 1: 	
+			Very first thing we need is the component where we want to add the dynamic component.
+			So, for this we will use ng-template or ng-container where all the dynamic component will get load.
+				<ng-container #controlPlaceHolder></ng-container>
+			
+			And then we have to get the view of the ng container
+				@ViewChild('controlPlaceHolder', {read: ViewContainerRef, static: true}) controlPlaceHolder: ViewContainerRef;
+			
+		step 2:
+			Then we can define a method that will load all component dynamically 
+			
+			loadComponent() {
+				let componentFactory = null;
+				this.controlPlaceHolder.clear();				// to remove the present view
+				
+				
+			Then we have to use ComponentFactoryResolver to resolve a ComponentFactory for each specific component. The ComponentFactory then creates an instance of each component.	
+			
+				componentFactory = this.componentFactoryResolver.resolveComponentFactory(FormFieldInputComponent);
+				
+			here, 'FormFieldInputComponent' is an angular component.
+			
+		step 3:
+			Now we have to use createComponent method of angular to manually create the component.
+			
+				const componentRef = this.controlPlaceHolder.createComponent(componentFactory);
+				const componentInstance = componentRef.instance as FormComponents;
+				componentInstance.configData = this.configData;
+				componentInstance.frmGroup = this.frmGroup;
+				
+			
+type of encapsulation
+change detection 
+angular material 
+
+
+https://angular.io/guide/schematics
+
+Angular 6
+-----------------------------------------------------------------------------------------------
+	Resolve:
+		Resolve property can be used in routes to pass some data to the component. For this we have define service where it will hit the API to return the data.
+		route: Routes = [
+			{path:'/home', component: HomeComponent, Resolve: {homeData: resolveService} }
+		]
+		
+		Resolve is an interface so we need to implement it 
+		
+		class resolveService implements Resolve{
+			resolve(ActivatedRouteSnapShot, RouterStateSnapshot) : Observable<> {
+				return this.http.get('.///');
+			}
+		}
+	
+	How to make multiple service call in angular:
+	
+		We can use forkjoin to make multiple service call and get the output of all in single array object.
+		For this, we need to import it from rxjs
+		
+		data1 = this.service.getData1('../');
+		data2 = this.service.getData2('../');
+		
+		forkJoin([data1, data2]).subscribe(result=>{
+			
+		})
+	
+	Angular Schematic:
+	-------------------------
+	
+	Angular Elemnets:
+	-------------------------
+	ng add @angular/elements
+	
+	@NgModule({
+	  declarations: [
+		AppComponent, HelloWorldComponent
+	  ],
+	  ...
+	  entryComponents: [AppComponent, HelloWorldComponent]
+	})
+	export class AppModule {
+		
+		
+	Angular validators:
+	-------------------------	
+		min, max for numbers
+		minLength and maxLength for characters in input field
+		required, email, pattern
+		
+		In template driven
+			<div *ngIf="name.invalid && (name.dirty || name.touched)"
+				class="alert alert-danger">
+
+			  <div *ngIf="name.errors.required">
+				Name is required.
+			  </div>	
+			  <div *ngIf="name.errors.minlength">
+				Name must be at least 4 characters long.
+			  </div>
+			  <div *ngIf="name.errors.forbiddenName">
+				Name cannot be Bob.
+			  </div>
+	
+		In reactive form,
+			this.heroForm = new FormGroup({
+				'name': new FormControl(this.hero.name, [
+				  Validators.required,
+				  Validators.minLength(4),
+
+	Angular 8 to 13 upgrade
+	-----------------------------
+	Benefits?
+	bundle size decreased
+	faster rendering
+	updated typescipt version
+	rxjs version
+	IVY defalut compiler
+
+	Learn about IVY
+	===========================
+
+	Angular library:
+	-----------------------------
+		An Angular library is an Angular project that differs from an app in that it cannot run on its own. A library must be imported and used in an app.
+		
+		For example, to add reactive forms to an app, add the library package using ng add @angular/forms, then import the ReactiveFormsModule from the @angular/forms library in your application code. Similarly, adding the service worker library to an Angular application is one of the steps for turning an application into a Progressive Web App (PWA). Angular Material is an example of a large, general-purpose library that provides sophisticated, reusable, and adaptable UI components.
+		
+		Whether you decide to package functionality as a library is an architectural decision, similar to deciding whether a piece of functionality is a component or a service, or deciding on the scope of a component.
+		
+		ng generate library my-lib				// my-lib is the folder contains library code
+		and then we can 
+			ng build my-lib
+			ng test my-lib
+			ng lint my-lib
+		
+		publishing the library 
+			ng build my-lib
+			cd dist/my-lib
+			npm publish
+	
+		To use the library in application we must build it so, it will available to import
+			mg build my-lib
+
+	Service Workers & PWA:
+	------------------------------------
+		A service worker is a script that runs in the web browser and manages caching for an application.
+		Adding a service worker to an Angular application is one of the steps for turning an application into a Progressive Web App 
+		
+		In order for service workers to be registered, the app must be accessed over HTTPS, not HTTP. Browsers ignore service workers on pages that are served over an insecure connection. The reason is that service workers are quite powerful, so extra care needs to be taken to ensure the service worker script has not been tampered with.
+		
+		ng add @angular/pwa --project *project-name*
+		
+		It provides Offline caching with service workers so your app can work without an internet connection
+		
+		ng build --prod
+		
+		You get your app with a service worker and manifest ready to be deployed. By default, the service worker will cache all JS, CSS, index.html and assets.
+		ngsw-config.json
+			
+		// lazy loading in installMode and buildMode
+		
+
+
+				Summary
+-----------===================------------------------
+1. Angular
+2. Building Block
+3. root if app start
+4. How does SPA
+5. Routing
+6. Angular compilation
+7. Http Serice call
+8. Observables
+9. Promise
+10.Forms and types
+11.Component lifecycle
+12.Communication
+13.Lazy Loading
+14.Performance/code optimization
+15.Security
+16.Route Guards
+17.SDLC/Agile
+18.Directives
+19.Events in angular
+20.Pipe/Impure pipes/Filters
+
+Developed High Contrast screen feature for Visual Impairment. So they can access the same information from system as everyone else.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						Angular Overview
+=====================================================================
+Theoretical Concepts
+====================================
+Angular Environments :
+-----------------------
+	0. What is Angular
+		It is a javascript framework which helps us to develop front end part of the web application.
+		It is a component based framework. for e,g., if we want to create one screen then we have to create angular component and components have its own template I mean html part and css and obviously the typescript file.
+		Angular provides each and everything we need to develop any application. Routing is there for single page application, service is there to store the data in app. filter is there to perform some operation and get required data.
+
+	1. Angular.json
+		Angular-cli.json file has been replaced with angular.json file in 6th version.
+		It is an important configuration file related to Angular application.
+		It defines the structure of app and includes any settings associated with application. Here we can can specify the environments like production and development.
+		
+		Here we define projects inside that we have sourcePath and architect where we defined the folder path for "serve", "build" and "test".
+		
+	
+	2. Package.json
+		It is a json file which contains information regarding all the dependent library file i.e., name of library file and thier specific version.
+		Here we defines scripts object which simply contains the npm command like "npm start".
+		Then we have "dependecies" object and "devDependecy" object.
+		
+		tilde (~) and caret (^) symbol in package.json:
+			version example:	1.9.6
+			Major changes(breaking): very first digit get updates, here it's "1".
+			Minor changes(old deprecated): 2nd digit : here it's 9"".
+			Patch changes(bug fixes): 3rd digit: here it's "6".
+			
+			tilde (~) goes for patch changes. for e.g., "~0.0.31" will check for "0.0.*".
+			caret (^) goes for minor changes. for e.g., "^5.4.2" will check for "5.*.*"
+				
+	3. use strict mode	
+		
+		
+	4. Interceptor	
+	
+
+
+So, What is angular
+---------------------
+	It is just a javascript framework that has been built to create single page application for Front End professionals.
+
+What are the building blocks/core component of angular
+------------------------------------------------------
+	Basically angular is a component based framework. Here we don't have controller like in angular 1
+	and to support the component we can create services for the data transmission between components
+	we can create Directives, filter and modules to divide the large application into some block known as modules.
+	So, i can say:
+		component
+		Services
+		Directives,
+		Routing,
+		Filter,
+		Modules
+
+What is root of angular, from where does it starts
+--------------------------------------------------
+	main.ts, it is the entry point of angular application. 
+	It simply imports the app.module file and pass it as argument in bootstrapModule of platformbrowserDynamic()
+	And in app.module we decorate using @NgModule, where we have imports for modules, declaration for components and bootstartp for the first component.
+	
+How does app.component works
+-------------------------------------------
+	The selector for app.component in the component decorator is app-root which defines that everything will go from here.
+	@component({
+		selector: 'app-root',
+		templateUrl: 'app.component.html',
+		styleUrls: 'app.component.css'
+	})
+	
+How angular achieves SPA
+-------------------------------
+	It can be achieved with the help of routing module of angular.
+	For this, we need to declare the root path in index.html <base href="/"> in local and in production <bas href="/my/app">
+	Now, the route path will get append after '/,
+	
+	Routing Module
+	------------------------
+		We need two things from @angular/core one is RouterModule and another is Routes.
+		and then simply creates the const routes: Routes = {path:'/', component: AppComponent}, 
+		while finding the route in routermodule it prefers first match service.
+		and then imports:[RouterModule.forRoot(routes)] and export thr RouterModule
+		
+	Path Definition in html
+	------------------------
+	in anchor tag without href routerLink="/crisis-center" routerLinkActive="active"
+
+Routing through Component and ActivatedRoute
+--------------------------------------------
+	this.router.navigateByUrl('/user/home')
+	route: ActivatedRoute
+	this.userToken = this.route.snapshot.params.token;
+	
+Angular Compilation
+-------------------
+	There are 2 ways to compile the application into javascript:
+	JIT Just In Time:
+	-----------------
+		Here, application get compiled in browser at runtime.
+		So, it will take time while loading the screen which affects the user experience.
+		ng build 
+		ng serve
+	AOT Ahead of time
+	-----------------
+		Here application get compiled in Build phase before the browser download and run the code.
+		It provides a faster rendering in the browser and improves the user experience, file size and security.
+		ng build --aot
+		ng serve --aot
+		
+
+Http Request/Service call
+-------------------------
+	A service can be create by importing "Injectable" decorator.
+		@Injectable({
+			providedIn: 'root'
+		})
+	
+	To make HttpClient available everywhere, import HttpClientModule in app.module
+	
+	For http request, we need to import HttpClient and HttpHeader from common/http
+	As HttpClient is service, so we need to inject in constructor(private http: HttpClient)
+	
+	We have get, post, delete and put method from HttpClient service to request the data and it returns the "Observable" that needs to get subsribe in component.
+	this.http.get('urll').pipe(catchError(this.handleError));
+	this.http.post('url', data);
+	this.http.put('url', data);
+	this.http.put('url');
+
+	next, error, complete 
+	
+	In Component,
+		this.appservice.getData('url').subscribe((data)=>this.name=data)
+
+Promise in angular
+------------------------------
+	To make the flow synchronous we need to use the promise.
+	As we know httpClient returns Observable so we need to convert into promise using toPromise()
+
+forkJoin
+------------------------------
+forkJoin is an operator that takes any number of input observables which can be passed either as an array or a dictionary of input observables.
+
+const observable = forkJoin([
+  of(1, 2, 3, 4),
+  Promise.resolve(8),
+  timer(4000)
+]);
+observable.subscribe({
+ next: value => console.log(value),
+ complete: () => console.log('This is how it ends!'),
+});
+ 
+// Logs:
+// [4, 8, 0] after 4 seconds
+// 'This is how it ends!' immediately after
+	
+
+Angular Forms
+-----------------------
+	Angular provides 2 types of forms.
+		1.	template-driven
+			Basic form requirements and logic that can be managed solely in the template, use template-driven forms.
+			It requires import of FormsModule in app.module.ts and angular automatically add NgForm directive with <form> tag.
+			It needs to add [(ngModel)] in input element which track the input element with thier state and value and add classes as per the lement state.
+			for eg. ng-dirty(when value changed) ng-pristine(opp. of ng-dirty)
+			ng-valid(when input value is valid) ng-invalid
+			ng-touched(when input is visited) ng-untouched, with the help of these classes we can write custome css for styling.
+			we can slo access the angulat control bu using template reference variable declared with prefix #
+			Now, to submit the form we need to add (ngSubmit)="onSubmit()" in <form> tag.
+		
+		2. 	reactive
+			Reactive forms provide a model-driven approach to handling form inputs whose values change over time. 
+			In reactive form, testing is easier because our data is consistent and predictable when requested.
+			Fo this, we need to import ReactiveFormsModule module into app.module
+			It uses formControl instead of [(ngModel)], need to import the formControl and formGroup in component
+				profileForm = new FormGroup({
+				firstName: new FormControl(''),
+				lastName: new FormControl(''),
+				});
+		
+			and in html, define the [formGroup] attribute with <form> tag. and in input, formControlName="firstName"
+			we can have nested formGroup as well. 
+			(ngSubmit)="onSubmit()" in <form> tag.
+			
+Component LifeCycle Hooks
+------------------------------------------------------
+	A component has a lifecycle managed by angular.
+	Angular creates it, renders it, create and renders it children, checks it when its data bound properties change and destroy it before removing from thr DOM.
+	After creating a component/directive by calling its constructor, Angular calls the lifecycle hook methods:
+		ngOnChanges(): get called when Angular resets data-bound input properties.
+		ngOnInit(): Initialize the directive/component after Angular first displays the data-bound properties and sets the component's input properties.
+		ngDoCheck(): Detect and act upon changes that Angular can't or won't detect on its own.
+		ngOnDestroy(): Cleanup just before Angular destroys the directive/component. Unsubscribe Observables and detach event handlers to avoid memory leaks.
+
+	onInit VS afterViewInit
+	---------------------------
+	ngOnInit() is called right after the directive's data-bound properties have been checked for the first time, and before any of its children have been checked. It is invoked only once when the directive is instantiated.
+
+	ngAfterViewInit() is called after a component's view, and its children's views, are created. Its a lifecycle hook that is called after a component's view has been fully initialized.
+
+	https://angular.io/guide/lifecycle-hooks
+
+package-lock.json 
+---------------------------------------
+it defines the exact versions of packeages defined in package.json and 
+it also defined the dependent or nested packages which get used for the higher level packages.
+For e,g, typescript packages contains whole new set of child packages.
+
+Change detection in angular/core
+-------------------------------------
+https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f
+
+
+Communication between application module
+-------------------------------------------
+	a.	parent to child component
+		add  @Input() hero: Hero; in the chil component and pass the hero from parent's template where we have in inject child component in html like below
+		<app-hero-child *ngFor="let hero of heroes" [hero]="hero" [master]="master"> </app-hero-child>
+			
+		We can also intercept the input in child component with setters and ngOnChange as well.
+	
+	b.	child to parent component
+		child component need to emit event using @output like this: @Output() voted = new EventEmitter<boolean>();this.voted.emit(true);
+		and in parent template, (voted)="onVoted($event)" which will get voted as event and can be used as below:
+					onVoted(agreed: boolean) {
+						agreed ? this.agreed++ : this.disagreed++;
+					}
+	c.	Parent can access the child component using local scope:
+			in Parent template: <app-countdown-timer #timer>
+			
+	d.	@ViewChild
+			In parent component we can inject the child component using @ViewChild and can access all the property of Child.
+				@ViewChild(CountdownTimerComponent, {static: false})
+				private timerComponent: CountdownTimerComponent;
+	e. And then using service
+	f. BehaviourSubject
+	
+		It always returns currwent value, known as hot observable
+		userData = new BehaviourSubject(initialValue)
+		In component,
+			userData.subscribe() 				// will return the initial data
+			
+			userData.next(newValue);
+			
+
+How to check if a character is lowercase or uppercase?
+============================================================
+var str = 3 || 't' || '!' 
+return str == str.toLowerCase() && str != str.toUpperCase();	
+
+Observable differs from promise
+--------------------------------------------------
+	Observable is a an interface to handle the asynchronous call or ajax. In earlier version of angular, we used Promise.
+	Asynchronous provides better solution for IO operation like requesting a data from server.
+	
+	Here in angular we use Observable to handle the ajax request for http modules, to listen and responds to router module and EventEmitter also.
+	this.activatedRoute.url.subscribe(url => console.log('The URL changed to: ' + url));
+	When you call emit(), it passes the emitted value to the next() method of any subscribed observer.
+	
+	How it works
+		Observable send the data and the observer subscribe the observable to receive the data.
+		simpleObs = new Observable((observer)=>{
+			observer.next("hey, i am the data");
+			observer.complete()
+		})
+		simpleObs.subscribe({
+			next(data)=>{console.log("here is your data")},
+			error(err)=>{console.log("error buddy" + err)}
+		})
+
+	Difference
+		Observable can be created once, and used many times.
+		Observable does not start computation until subscription while peomise executes immediately while creation.
+		Observable differentiate between chaining and subscription where we can do complex transformation.
+
+	sync call in angular
+		use async await and convert the observable into promise
+	
+
+Directives
+---------------------------------------
+	There are 3 types of directive in angular: Structural, Attribute and Component.
+	Structural:
+	-----------------
+		*ngFor = "let item of object"
+		*ngIf = "isValid"
+		which change the structure of DOM.
+		
+	Attribute:
+	------------------
+		Which add styling to Element and used as an attribute.
+		import Directive and ElementRef from angular/core and define selector decorator
+		@Directive({
+			selector: '[appHighlight]'
+		})
+		export class directiveName{
+			constructor(elr: ElementRef){
+				elr.nativeElement.style.backgroundColor = "Red";
+			}
+		}
+		<p appHighlight>Highlight me!</p>
+		
+		Event Listener with Directive:
+		--------------------------------
+			import {HostListener, Directive and ElementRef} from angular/core
+			@HostListener('mouseenter') onMouseEnter(){
+				this.highlight('yellow');
+			}
+			private highlight(color){
+				elr.nativeElement.style.backgroundColor = "Red";
+			}
+
+		pass argument in diirective:
+		-------------------------------
+		we need to get the argumnet/data from html using @input
+		@Input() highlightColor: string;
+		
+		and then pass the highlightColor to highlight method
+		@HostListener('mouseenter') onMouseEnter(){
+			this.highlight(this.highlightColor);
+		}
+		
+		and in html:
+		<p appHighlight highlightColor="yellow">Highlighted in yellow</p>
+		
+	Component
+	---------------------------
+	it is a directives with a template.
+
+Filter/Pipe pure and impure Pipes
+--------------------------------------------
+	Pipe is another feature provided by angular to filter the object. It takes input and transform it as per condition.
+	Simply we need to import the pipe and pipetransform from angular/core.
+	
+	@pipe({
+		name: 'checkData'
+	})
+	export class checkDataPipe implements PipeTransform {
+		transform(arg1: String, arg2: String){
+			if(arg1 > 10){
+				return arg1;
+			}
+			else{
+				return arg2;
+			}
+				
+		}
+	}
+	impure pipes
+	--------------------------
+	 Pipes are pure by default
+	  You make a pipe impure by setting its pure flag to fals
+	  @Pipe({
+			name: 'flyingHeroesImpure',
+			pure: false
+		})
+		
+	async pipe have different state and can't be shared with different object while in pure pipe we don't have any internal state and the output do not change if we don't change the input which is same concept of pure and impure function.
+
+	So, impure function:
+		cannot use the input value to determine if the output will change
+		cannot be shared because the internal state can be affected from outside
+	
+	Angular have provided AsyncPipe which simply subscribes the observer and get call on every instance because it do not share the state.
+		While in pure pipe case , Angular share the same output instead of calling again for every instance.
+
+multipl router-outlet
+---------------------------------
+<router-outlet name='child2'></router-outlet>
+<router-outlet name='child1'></router-outlet>	
+
+{
+            path: '',
+            component: childOneComponent,
+            outlet: 'child1'
+        },
+
+
+Lazy Loading
+--------------------------------
+	It is design pattern that loads NgModules as needed. By default, all the NgModules get loaded immediately when the app loads.
+	Lazy loading helps keep initial bundle sizes smaller, which in turn helps decrease load times.
+	
+	in app-routing module,
+		path: '/order',
+		loadChildren: () => import('./order.module').then(mod=> mod.OrderModule)
+		
+	and in OrderModule, we need to define the order-routing module like below:
+		@NgModule:({
+			imports: [OrderRoutingModule],
+			declarations: [CustomerListComponent]
+		})
+	
+	Inside OrderRoutingModule, simply we need to define the route and their component like below and inject in RouterModule.forChild.
+		const routes: Routes = [ {path: '/', component: OrderComponent} ];
+		@NgModules({
+			imports: [RouterModule.forChild(routes)],
+			exports: [RouterModule]
+		})
+			
+	
+Angular performance/Code Optimization
+-----------------------------------------
+	Regarding application performance, we need to understand the problem first.
+	I believe we can have the perforamce issue majorily at 2 levels.
+	1. Application loading time or screen loading
+	2. runtime performance issue which means when you click seomthing or scroll the page you are seeing the delay in response.
+	So regarding first one which is to improve loading time, there are few options to starts with:
+		1. divide application into multiple modules and lazy load them as per screen/feature.
+			{path: '/products', loadChildren: () => import('../comp').then(mod=>mod.ComponentModule)}
+		2. analyze the API which get called while loading the page, if its more than one then see if they are 		independent or dependent and as per that use the proper rxjs operator to fetch them.
+		Like you can forkjoin if they are independent
+		you can use switchMap if you just want the latest subscription and eventually it will cancel all the previous https requests.
+		3. look for data pre-processing and try to resolve multiple nested for loop.
+
+
+	Basice idea behind performance or code optmization is to use less amount of code in production if possible and the code should be in organized way like no duplicate code, removes whitespaces, unsubscribe the observer after use.
+	
+	1. AOT vs JIT
+		Now after angular 5 they have added AOT as default compilation for production while in local it's JIT.
+			ng build , ng serve 				// JIT
+			ng build --prod, ng serve --prod    // AOT
+	
+	2.	Code minification
+		Here, we use UglifyJs to minify the code by removing whitespaces, renaming properties, dead code elimination, comments and many more.
+	
+	3.	Lazy Loading Modules
+	4.	Avoid function call in view 
+		<h2> {{getName()}}, due to two 
+		
+	5. Unsubscribe the observable
+		private _subscription: Subscription;
+		ngOnDestroy(): void {
+			this._subscription.unsubscribe();
+		}
+
+	And basic programming techniques like using 
+		else if, 
+		=== instead of ==
+		Declare Variables Outside of the For Statement.
+		Reduce global variable
+		removes curly brace inf single statement
+		
+Angular security
+----------------------------------------------
+	1.	Always update angular latest library to avoid previous bugs and get the latest security patch.
+	2.	Preventing XSS cross site scripting
+			We need to use DomSanitizer and import { DomSanitizer } from '@angular/platform-browser'
+			There are three method for sanitizing the value: sanitizeHtml, sanitizeStyle and sanitizeUrl.
+			And to disable the sanitization we do have bypassSecurityTrustX methods.
+			constructor(private sanitizer: DomSanitizer) {
+				this.html = sanitizer.bypassSecurityTrustHtml('<h1>DomSanitizer</h1><script>ourSuperSafeCode()</script>') ;
+			}
+			
+	3.	use AOT for offline template compiler.
+	4.	XSRF cross site request forgery
+		When performing HTTP requests, an interceptor reads a token from a cookie, by default XSRF-TOKEN, and sets it as an HTTP header, X-XSRF-TOKEN. Since only code that runs on your domain could read the cookie, the backend can be certain that the HTTP request came from your client application and not an attacker.
+
+	5.	Use authentication and authorization
+
+ng-switch_expression=
+==============================
+	<container-element [ngSwitch]="switch_expression">
+	<!-- the same view can be shown in more than one case -->
+	<some-element *ngSwitchCase="match_expression_1">...</some-element>
+	<some-element *ngSwitchCase="match_expression_2">...</some-element>
+	<some-other-element *ngSwitchCase="match_expression_3">...</some-other-element>
+	<!--default case when there are no matches -->
+	<some-element *ngSwitchDefault>...</some-element>
+	</container-element>
+
+	ng-template vs ng-container
+	==================================
+	ng-template can be used to define as content element which will not render in dom. We can't use structural drective like *ngIf, *ngFor with ng-template.
+	I have used for else oart of *ngIf defined in other element.
+
+	Ng-container can be used to define as contanier element which can use *ngIf or *ngFor and this element will also not render in dom.
+	
+	Object and instance difference 
+	===================================
+	when we call the constructor of the class using new keyword it creates an object and when we assign it to a vaible then that variable is known as instance of the object. So, here this instance is refering to the object.
+	Also we need to understand here is that reference actually works like pointer. So for example if we have 5 idfferent insatnce of the same object and if we assign new value to the instance it will change the data for all instance because all the instances are refering to the same object. 
+
+	
+Route Guards
+--------------------------------------
+	It simply provides the guard to access the routes. Below are the guard provided by Angular:
+		1.	CanActivate
+		2.	CanActivateChild
+		3.	CanDeactivate
+		
+	Simply, we need to import it from @angular/router.
+		And define a service and implements the CanActivate. and define the method canActivate() which returns true or false to access the route.
+			canActivate(){
+				if(someCondition){
+					return true;
+				}
+			}
+	Same way, we can define the CanActivateChild.
+	
+	CanDeactivate is used to warn people if they are navigating away from a page where they have some unsaved changes.
+
+SDLC
+--------------------------------------
+	Agile methodology
+		The agile process is broken into individual models that designers work on.
+		The customer has early and frequent opportunities to look at the product and make decision and changes to the project
+		Error can be fixed in the middle of the project.
+		Here we use scrum framework
+			it involves the product owner, scrum master and development team.
+			Normaly we use sprints to complete specific task and it last 2-4 weeks.
+			Sprint planning
+			Then Daily stand Up (max 15 minutes)	
+			Then Sprint review. product owner decides to go or to add sometihing
+			Then Retrospective: what went well, what didn't and how to improve in next sprint.				
+
+
+Technical
+=======================================
+async await
+--------------------
+	getData = async function(){
+		this.userLoginToken = await this.appService.checkLoginDetails(userData);
+		if(userLoginToken){
+			
+		}
+	}
+
+
+CSS question
+=======================================
+	Develop Mobile screen/Responsive web design
+		1.	Media Query:
+				we do use max-width, min-width, orientation. E.g.
+				@media only screen and (min-width: 768px) {
+				
+				} 
+				@media only screen and (orientation: landscape) {
+		
+		2.	Viewport
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+		3. 	Layout/Grid view
+				We use 12 column grid.Simply we divide the total width into column by assuming width as 100%.
+				.col-1{width: 8.33%}
+				.col-2{width: 16.66%} and so on
+		
+		4. 	Positions
+			https://medium.com/@leannezhang/difference-between-css-position-absolute-versus-relative-35f064384c6
+				Static:
+					By default the position of any element is static so all the element come after one.
+					
+				Relative:
+					Position of an element get change based on it's current position without changing the layout of other element.
+					And also it keeps the space of current position. It will create the gap.
+							
+				Absolute:
+					Position of an element get change based on it's closest positioned ancestor element's position.
+					
+				Fixed:
+					Position of an element will be fixed  regardless of other element.
+			
+			
+HTML5
+===================================================================================
+	1.	new element: header, nav, main, mark, section, article, aside, footer
+	2.  new input element: email, time, date, month, number
+	3.  new input attribute: required, placeholder, min, max, autofocus
+	4.  block: div and semantic element, h1-h6
+	5.  inline: a, span, b, small, i, button, input
+	6.  inline-block:  inline element with height and padding
+	
+	7.	storage
+		localStorage: localStorage.setItem('jey', 1222), localStorage.getItem('jey') it resides in browser even after closing the tab or browser.
+		sessionStorage: sessionStorage.setItem('key', 323), sessionStorage:.setItem('key'), lost when closing the tab and it will not share the session between 2 tab even both tab have opened the same page.
+		
+	8. 	<meta charset="UTF-8"> to define character set in html
+	9. 	<!Doctype html> // this indicate HTML5.
+	10. web workers: web workers is a javascript that runs in background and independenty of other scripts.
+		w = new Worker("jsfile.js")
+		w.onMessage = function(){}
+		to destry the worker w.terminate(); w= undefined;
+		
+	Text formatting element:
+		<b>			// bold text
+		<i>			//italic text
+		<small>		//smaller text
+		<strong>	//important text
+		<sub>		//subscripted text
+		<super>		//super scripted text
+		<ins>		//inserted/underline text
+		<del>		//deleted/cancelled text
+		
+rxjs
+================================================
+	1. mapping observable subscription
+		a. map
+			map operator can be used to map the value to desired format and the return value will be wrapped in observable again. e.g.,
+			const data = of([{brand: 'porsche', model: '911'}, {brand: 'ferrari', model: 458}]);
+			data.pipe(
+				map(cars=>cars.map(car=>`${car.brand} ${car.model}`))
+				).subscribe(cars=>console.log(cars));
+
+		b. switchMap
+			switchMap is a combination of switchAll and map. SwitchAll cancels the previous subscription and subscribes to the new one.
+			activeFilters.pipe(
+				switchMap(param => getData(param))
+				).subscribe(val => console.log(val));
+
+		c. mergeMap
+			mergedMap can be used when we want to handle the inner observables or we can say nested subscription.
+			const getData = (param) => {
+				return of(`retrieved new data with param ${param}`).pipe(
+				  delay(1000)
+				)
+			}
+			  
+			from([1,2,3,4]).pipe(
+				map(param => getData(param))
+			).subscribe(val => val.subscribe(data => console.log(data)));
+
+			here we have to subscribe two times. so we can user mergeMap to handle both observable and subscribe only once.
+			MergeMap essentially is a combination of mergeAll and map.
+			// using mergeMap
+			from([1,2,3,4]).pipe(
+				mergeMap(param => getData(param))
+			).subscribe(val => console.log(val));
+
+		d. concatMap
+			concatMap will not subscribe to the next Observable until the current one completes. The benefit of this is that the order in which the Observables are emitting is maintained.
+			from([1, 2, 3 ,4]).pipe(
+				concatMap(param => getData(param))
+			).subscribe(val => console.log('concatMap:', val));
+
+
+Bootstrap
+==============================================================================
+	container class for the layout 
+		.container
+		.container-fluid
+		
+	Grid system: 12 column
+	Bootstrap grid system has four classes: 
+		.col-(less than 576px)
+		.col-sm-(equal and greater than 576)
+		.col-md-(equal greater than 768px)
+		.col-lg-(equal grater than 992px)
+		.col-xl-(equal grater than 1200px)
+		
+		first add the row class immediate after container class like below
+			<div class="container">
+				<div class="row">
+					<div class="col-*-*"></div>
+					<div class="col-*-*"></div>
+				</div>
+			</div>
+			
+	
+	RWD responsive web design:
+	---------------------------------
+	Media query:
+		Define Breakpoint
+			// Extra small devices (portrait phones, less than 576px)
+			@media (max-width: 575.98px) { ... }
+
+			// Small devices (landscape phones, 576px and up)
+			@media (min-width: 576px) and (max-width: 767.98px) { ... }
+
+			// Medium devices (tablets, 768px and up)
+			@media (min-width: 768px) and (max-width: 991.98px) { ... }
+
+			// Large devices (desktops, 992px and up)
+			@media (min-width: 992px) and (max-width: 1199.98px) { ... }
+
+			// Extra large devices (large desktops, 1200px and up)
+			@media (min-width: 1200px) { ... }
+		
+			@media only screen and (orientation: landscape) {
+			
+			
+	Bootstrap Classes
+	------------------------------------
+		Major classes that provides color to distinguish
+		primary
+		secondary
+		success				// green     
+		info				// blue
+		danger				// red
+		warning				// yellow
+		
+		size:
+			sm-				//small
+			lg-				//large
+		
+		Buttons  			.btn, .btn-*, .btn-outline-*
+		Input				.form-group .form-control
+		Form				.form-group 
+		Alert				.alert-danger, .alert-*
+		Pagination			ul.pagination li.page-item a.page-link  then can add active/diabled in li
+		Modal				.modal .modal-dialog .modal-content .modal-header .modal-body .modal-footer
+		Typography			f1-f6 16px +4 , strong, b, pre, 
+		Progress bar		.progress .progress-bar, define width: 30%  and can add color using bg-success and *	
+		spinner				.spinner-border text-danger and *
+	
+	
+managerial round
+=====================================
+
+for me most challenging task was to apply accessibility in our web page because this feature will help specially abled people.
+Through Accessibility we provides may features like screen reader, keyboard accessibility and font-resizing. 
+
+Suppose some user have issue with normal font-size then for them we can increase the font-size of webpage basically for partial blind people.
+
+suppose some person who is blind and can't see our screen i mean web page then for them we have keyboard accessibility feature through that person can interact to every element of webpage and with the help of screen reader functionality it will announce or read the text appears on webpage.
+
+and it is challenging because we need to test each and every bit of webpage and it should read correctly each and every command otherwise it will confuse the user and will be bad user experience.
+
+Project contribution
+=====================================
+
+Here in my project i work as a front end developer where my lead assign tasks to me and then i simply discussion with my lead and team member about the requirement and the develop the solution.
+
+some times new user story comes, some times new defects.
+
+B'day celebration organizing, team outing. 	
+
+problem
+==================
+var items = [1, 2, 3];
+var callbacks = [function() { console.log('hi') }, function() { console.log('hi') }]
+
+var result = items.map(item => {
+  var intermediate = item;
+  callbacks.forEach(callback => {
+    intermediate = callback(intermediate);
+  })
+  return intermediate;
+});
+console.log(result);
+
+
+solution
+====================
+const
+    items = [1, 2, 3],
+    callbacks = [x => x + 1, x => 2 * x],
+    result = items.map(item => callbacks.reduce((x, fn) => fn(x), item));
+
+console.log(result);
