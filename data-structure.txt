@@ -1,0 +1,15 @@
+1. A building has 100 floors. One of the floors is the highest floor an egg can be dropped from without breaking.
+If an egg is dropped from above that floor, it will break. If it is dropped from that floor or below, it will be completely undamaged and you can drop the egg again.
+Given two identical eggs, how can you find the highest floor an egg can be dropped from without breaking, with as few drops as possible.
+
+solution
+----------------------
+simple solution would be to start from the bottom one by one but it will take o(n) time complexity.
+
+to optimise it,
+We have 2 eggs which means we can try first egg even if it breaks so we can try to drop the egg at 50th floor and if it breaks then we have check only starting 50 floor.
+so now we are left with only one egg and we have three option, drop from 49th floor, drop from 25th or start from bottom.
+The risk is that egg ight get break at 49th and 25th and in that case we will not be able to find the solution.
+so we must have to start from bottom to make sure it do not break.
+so the worst case would be 49 attempt which is o(n/2 - 1).
+and the best would be o(2)

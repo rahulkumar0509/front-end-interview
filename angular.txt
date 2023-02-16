@@ -3,9 +3,45 @@ https://www.npmjs.com/package/angular-cli-ghpages
 https://angular.io/guide/deployment
 https://devblogs.microsoft.com/premier-developer/angular-how-to-editable-config-files/
 
+PreloadingStrategy
+================================
+https://sachilaranawaka.medium.com/how-to-preload-angular-lazy-loaded-modules-in-the-background-cdd309f2a897 
+It is one of the way to load the modules in the application. It works along with lazy loading modules.
+Basically all the modules which has been defined in app.modules will get loaded eagerly and then all those modules which has been 
+defined as loadChildren:()=>('import').then(mod=>mod.moduleName);
+will get load when the mentioned router path get hit.
+So now angular also provide an option to load this module even before this but after all the eager loaded modules. so it will
+be getting load in background. 
+All we have to do is import preloadingStrategy and pass default value as PreloadAllModules
+RouterModule.forRoot(
+  routes,
+  { 
+    preloadingStrategy: PreloadAllModules
+  }
+) 
+
+So with this all the lazy load modules will get loaded before even routing to the path.
+So if we want to define pre load for specific lazy load module then we can do it by defining gthis:
+data.preload
+
+{
+  path: 'lazy-module-path',
+  loadChildren: () => import('./my-lazy-module.module').then(mod => mod.CrisisCenterModule),
+  data: { preload: true }
+},
+
+Pure Pipes
+=========================
+just as pure: true or false in @pipe({name: '', pure: false}) decorator
+https://medium.com/@josce.james7/increase-your-apps-performance-with-angular-pipes-4690ff001cf9
+Pipes are pure by default and as we know pure functions means that when we pass the same data to the function and if it returns the same output every time then the function is pure. Same thing applies to pipes and to make a pipe impure we can pass the decordator pure as false.
+So we can use pipes for any calculation if we needed in the template.
+So it will help in optimizing the performance of the application. 
+so whenever we are doing any calculation in template with click method or data binding we can use pipe.
+So with the pure pipe angular will not run the code defined in pipe everytime whenever we have change detecttion
 
 Convert an object to array
-=============================
+=================================
 	https://www.geeksforgeeks.org/how-to-convert-an-object-to-an-array-of-key-value-pairs-in-javascript/
 
 Design generic angular application
@@ -54,6 +90,17 @@ https://angular.io/guide/schematics
 
 Angular 6
 -----------------------------------------------------------------------------------------------
+
+Custom validators
+------------------------
+
+impure pipe example
+------------------------
+
+
+debounce
+------------------------
+
 	Resolve:
 		Resolve property can be used in routes to pass some data to the component. For this we have define service where it will hit the API to return the data.
 		route: Routes = [
@@ -95,10 +142,26 @@ Angular 6
 	  entryComponents: [AppComponent, HelloWorldComponent]
 	})
 	export class AppModule {
-		
+
+	ViewEncapsulation
+	--------------------
+	@Component({
+		encapsulation: ViewEncapsulation.ShadowDom	
+	})
+	
 		
 	Angular validators:
 	-------------------------	
+	custom validators
+	-----------------
+	 name: new FormControl(this.hero.name, [
+    Validators.required,
+    Validators.minLength(4),
+    forbiddenNameValidator(/bob/i) // <-- Here's how you pass in the custom validator.
+  ]),
+
+  inbuilt
+  ---------------
 		min, max for numbers
 		minLength and maxLength for characters in input field
 		required, email, pattern
@@ -302,7 +365,9 @@ How angular achieves SPA
 		We need two things from @angular/core one is RouterModule and another is Routes.
 		and then simply creates the const routes: Routes = {path:'/', component: AppComponent}, 
 		while finding the route in routermodule it prefers first match service.
-		and then imports:[RouterModule.forRoot(routes)] and export thr RouterModule
+		and then 
+		imports:[RouterModule.forRoot(routes)],  
+		export:[RouterModule]
 		
 	Path Definition in html
 	------------------------
@@ -310,6 +375,7 @@ How angular achieves SPA
 
 Routing through Component and ActivatedRoute
 --------------------------------------------
+    this.router.navigate(ComponentName)
 	this.router.navigateByUrl('/user/home')
 	route: ActivatedRoute
 	this.userToken = this.route.snapshot.params.token;
