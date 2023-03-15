@@ -1,3 +1,72 @@
+preloadingStrategy, pure pipe, benefit of impure pipe, object to array, dynamic load component, debounceTime, 
+custom validators, Inbuit validator, version upgrade, web worker vs service workers, ViewEncapsulation,
+switchMap, mergedMap, concatMap, Resolve
+
+aftercontent vs afterView
+============================================
+rare question
+
+How to stop calling the method multiple times
+=================================================
+*ngFor ="let data of Arr"
+{{data.getName()}}
+
+pre-process the data before in ts 
+
+Design pattern in object oriented
+====================================
+
+	Creational design pattern
+		How the object can be created to make sure the code is getting reused.
+		Singleton 
+		Builder
+
+	Structual pattern
+	How the strcuture of class and object can be bring together for larger structure while keeping it flexible and efficient
+		Composite or tree strcuture says that we can place one structure under another one.
+
+	Bheavioral pattern 
+	It says how to define the responisbiliies between object.
+		chain of responisbility
+		Observer
+
+	1. Dependency Injection pattern: Injecting service in constructor
+	2. Lazy pattern: lazy loading Concepts
+	3. Singleton pattern: Services defined at root
+	4. SOLID pattern: 
+	5. MVC pattern
+
+
+what is ngZone
+=====================
+Angular uses zone to run change detection for all the asynchronous process execution.
+so when we use http.get, it actually runs the change detection.
+
+Angular provides ngZone service which have run method to manually run the change detection.
+And when we dont want to run the changedetcttion for particular method then we can use runOutsideAngular()
+
+this.ngZone.runOutsideAngular(()=>{
+	this.http.get().subscribe();
+})
+
+
+this.userForm = this.fb.group({
+	name: ['', validFunc]
+})
+validFunc(){
+	return (control: AbstractControl)=>{
+		let val = control.value;
+		if(val.split('')[0]==="O"){
+			return true/false/{'prefix': false}
+		}
+	}
+
+}
+this.userForm.get('name').valueChanges.pipe(debounceTime(3000), distinctUntilChanged()).subscribe(data=>{
+
+})
+
+
 https://help.github.com/en/github/working-with-github-pages/about-github-pages
 https://www.npmjs.com/package/angular-cli-ghpages 
 https://angular.io/guide/deployment
@@ -30,11 +99,20 @@ data.preload
   data: { preload: true }
 },
 
+
 Pure Pipes
 =========================
-just as pure: true or false in @pipe({name: '', pure: false}) decorator
+Impure pipe gets executed in every digest cycle.
+just as pure: true or false in decorator
+@pipe({
+	name: "",
+	pure: false
+})
 https://medium.com/@josce.james7/increase-your-apps-performance-with-angular-pipes-4690ff001cf9
-Pipes are pure by default and as we know pure functions means that when we pass the same data to the function and if it returns the same output every time then the function is pure. Same thing applies to pipes and to make a pipe impure we can pass the decordator pure as false.
+Pipes are pure by default and as we know pure functions means that when we pass the same data to the function 
+and if it returns the same output every time then the function is pure. Same thing applies to pipes and to make 
+a pipe impure we can pass the decordator pure as false.
+
 So we can use pipes for any calculation if we needed in the template.
 So it will help in optimizing the performance of the application. 
 so whenever we are doing any calculation in template with click method or data binding we can use pipe.
@@ -91,18 +169,22 @@ https://angular.io/guide/schematics
 Angular 6
 -----------------------------------------------------------------------------------------------
 
-Custom validators
-------------------------
-
 impure pipe example
 ------------------------
 
 
-debounce
+debounceTime
 ------------------------
+A function that returns an Observable that delays the emissions of the source Observable by the specified dueTime,
+this.searchbox.valueChanges.pipe(debounceTime(1000)).subscribe(text=>{
+	this.http.get('\url'+text).
+})
+we use distinctUntilChanged along with debounceTime to get only unique value until the debounce time happens.
+
 
 	Resolve:
-		Resolve property can be used in routes to pass some data to the component. For this we have define service where it will hit the API to return the data.
+		Resolve property can be used in routes to pass some data to the component. For this we have define service
+		where it will hit the API to return the data.
 		route: Routes = [
 			{path:'/home', component: HomeComponent, Resolve: {homeData: resolveService} }
 		]
@@ -155,10 +237,10 @@ debounce
 	custom validators
 	-----------------
 	 name: new FormControl(this.hero.name, [
-    Validators.required,
-    Validators.minLength(4),
-    forbiddenNameValidator(/bob/i) // <-- Here's how you pass in the custom validator.
-  ]),
+		Validators.required,
+		Validators.minLength(4),
+		forbiddenNameValidator(/bob/i) // <-- Here's how you pass in the custom validator.
+  	]),
 
   inbuilt
   ---------------
@@ -241,17 +323,27 @@ debounce
 
 
 				Summary
------------===================------------------------
-1. Angular
-2. Building Block
-3. root if app start
+-----------===================--------------------
+1. Angular, angular.json, : ng build, serve, test, max, war
+package.json  version name
+2. Building Block compon, service, directive, pipe 
+3. root if app start main.ts
 4. How does SPA
-5. Routing
+5. Routing   
+routes: Routes, router-outlt name="", 
+path: '',outlet: ""
+RouterModule.forRoot(roures, {preloadingStrategy: presloadallmodules})
 6. Angular compilation
 7. Http Serice call
 8. Observables
 9. Promise
-10.Forms and types
+10.Forms and types:
+new FormGroup({
+	name: new FormControl('', Validators.required)
+})
+this.fb.group({
+	name: ['', validFunc]
+})
 11.Component lifecycle
 12.Communication
 13.Lazy Loading
@@ -264,9 +356,6 @@ debounce
 20.Pipe/Impure pipes/Filters
 
 Developed High Contrast screen feature for Visual Impairment. So they can access the same information from system as everyone else.
-
-
-
 
 
 
@@ -330,13 +419,13 @@ What are the building blocks/core component of angular
 ------------------------------------------------------
 	Basically angular is a component based framework. Here we don't have controller like in angular 1
 	and to support the component we can create services for the data transmission between components
-	we can create Directives, filter and modules to divide the large application into some block known as modules.
+	we can create Directives, Pipes and modules to divide the large application into some block known as modules.
 	So, i can say:
 		component
 		Services
 		Directives,
 		Routing,
-		Filter,
+		Pipes,
 		Modules
 
 What is root of angular, from where does it starts
@@ -368,6 +457,25 @@ How angular achieves SPA
 		and then 
 		imports:[RouterModule.forRoot(routes)],  
 		export:[RouterModule]
+
+		app-routing.module:
+		--------------------
+
+		import {RouterModule, Routes} from '@angular/router'
+
+		const routes: Routes = [{
+			path: '', component: ABC, CanActivate: ServiceName, loadChildren: ()=> import('').then(mod=>mod.nameModule, data: {preload: true})
+		}]
+
+		@NgModules({
+			imports: [RouterModule.forRoot(routes, {preloadingStrategy: preloadedModules})]
+			exports: [RouterModule]
+		})
+
+		export class Approuting{}
+		route: ActivatedRoute;
+		this.route.snapshot.param.data;
+
 		
 	Path Definition in html
 	------------------------
@@ -379,6 +487,7 @@ Routing through Component and ActivatedRoute
 	this.router.navigateByUrl('/user/home')
 	route: ActivatedRoute
 	this.userToken = this.route.snapshot.params.token;
+	routerLink="helloPath"
 	
 Angular Compilation
 -------------------
@@ -446,6 +555,13 @@ observable.subscribe({
 
 Angular Forms
 -----------------------
+<form [formGroup]="userForm">
+userForm = new FormGroup({
+	name: new FormControl('', Validators.required)
+})
+this.fb.group({
+	name: ['', Validators.required]
+})
 	Angular provides 2 types of forms.
 		1.	template-driven
 			Basic form requirements and logic that can be managed solely in the template, use template-driven forms.
@@ -509,8 +625,13 @@ Communication between application module
 		We can also intercept the input in child component with setters and ngOnChange as well.
 	
 	b.	child to parent component
-		child component need to emit event using @output like this: @Output() voted = new EventEmitter<boolean>();this.voted.emit(true);
-		and in parent template, (voted)="onVoted($event)" which will get voted as event and can be used as below:
+		child component need to emit event using @output like this: 
+		@Output() voted = new EventEmitter<boolean>();
+		this.voted.emit(true);
+		and in parent template, 
+		(voted)="onVoted($event)" 
+		which will get voted as event and can be used as below:
+
 					onVoted(agreed: boolean) {
 						agreed ? this.agreed++ : this.disagreed++;
 					}
@@ -528,7 +649,6 @@ Communication between application module
 		userData = new BehaviourSubject(initialValue)
 		In component,
 			userData.subscribe() 				// will return the initial data
-			
 			userData.next(newValue);
 			
 
@@ -638,7 +758,7 @@ Filter/Pipe pure and impure Pipes
 	impure pipes
 	--------------------------
 	 Pipes are pure by default
-	  You make a pipe impure by setting its pure flag to fals
+	  You make a pipe impure by setting its pure flag to false
 	  @Pipe({
 			name: 'flyingHeroesImpure',
 			pure: false
@@ -697,7 +817,8 @@ Angular performance/Code Optimization
 	So regarding first one which is to improve loading time, there are few options to starts with:
 		1. divide application into multiple modules and lazy load them as per screen/feature.
 			{path: '/products', loadChildren: () => import('../comp').then(mod=>mod.ComponentModule)}
-		2. analyze the API which get called while loading the page, if its more than one then see if they are 		independent or dependent and as per that use the proper rxjs operator to fetch them.
+		2. analyze the API which get called while loading the page, if its more than one then see if they are 		
+			independent or dependent and as per that use the proper rxjs operator to fetch them.
 		Like you can forkjoin if they are independent
 		you can use switchMap if you just want the latest subscription and eventually it will cancel all the previous https requests.
 		3. look for data pre-processing and try to resolve multiple nested for loop.
@@ -739,11 +860,13 @@ Angular security
 			And to disable the sanitization we do have bypassSecurityTrustX methods.
 			constructor(private sanitizer: DomSanitizer) {
 				this.html = sanitizer.bypassSecurityTrustHtml('<h1>DomSanitizer</h1><script>ourSuperSafeCode()</script>') ;
-			}
-			
+			}	
 	3.	use AOT for offline template compiler.
 	4.	XSRF cross site request forgery
-		When performing HTTP requests, an interceptor reads a token from a cookie, by default XSRF-TOKEN, and sets it as an HTTP header, X-XSRF-TOKEN. Since only code that runs on your domain could read the cookie, the backend can be certain that the HTTP request came from your client application and not an attacker.
+		When performing HTTP requests, an interceptor reads a token from a cookie, by default XSRF-TOKEN,
+		and sets it as an HTTP header, X-XSRF-TOKEN. Since only code that runs on your domain could read the 
+		cookie, the backend can be certain that the HTTP request came from your client application and not an 
+		attacker.
 
 	5.	Use authentication and authorization
 
@@ -760,15 +883,21 @@ ng-switch_expression=
 
 	ng-template vs ng-container
 	==================================
-	ng-template can be used to define as content element which will not render in dom. We can't use structural drective like *ngIf, *ngFor with ng-template.
-	I have used for else oart of *ngIf defined in other element.
+	ng-template can be used to define as content element which will not render in dom. 
+	We can't use structural drective like *ngIf, *ngFor with ng-template.
+	I have used for else part of *ngIf defined in other element.
 
-	Ng-container can be used to define as contanier element which can use *ngIf or *ngFor and this element will also not render in dom.
+	Ng-container can be used to define as contanier element which can use *ngIf or *ngFor and 
+	this element will also not render in dom.
 	
 	Object and instance difference 
 	===================================
-	when we call the constructor of the class using new keyword it creates an object and when we assign it to a vaible then that variable is known as instance of the object. So, here this instance is refering to the object.
-	Also we need to understand here is that reference actually works like pointer. So for example if we have 5 idfferent insatnce of the same object and if we assign new value to the instance it will change the data for all instance because all the instances are refering to the same object. 
+	when we call the constructor of the class using new keyword it creates an object and when we assign it to 
+	a vaible then that variable is known as instance of the object. 
+	So, here this instance is refering to the object.
+	Also we need to understand here is that reference actually works like pointer. 
+	So for example if we have 5 idfferent insatnce of the same object and if we assign new value to the 
+	instance it will change the data for all instance because all the instances are refering to the same object. 
 
 	
 Route Guards

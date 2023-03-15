@@ -1,4 +1,64 @@
-1. A building has 100 floors. One of the floors is the highest floor an egg can be dropped from without breaking.
+1. search, sort, min, number palindrome, pair of sum, find missing number from sequece, proper closed bracket,
+stock price, remove particular value from array and return length;
+
+Time complexity
+=========================
+https://www.jenniferbland.com/time-complexity-analysis-in-javascript/
+Represented by Big O 
+
+1. O(1) constant time complexity
+
+2. O(log n)- logarithmic
+With logarithmic notation execution time increases, but at a decreasing rate.
+E.g., Binary search 
+
+3. O(n) Linear
+O(n) describes an algorithm whose performance will grown linearly and in direct proportion to the size of the input data set.
+Example: Printing the elements in an array
+
+4. O(n^2) Quadratic
+Quadratic time complexity is almost the inverse of logarithmic complexity. With Quadratic Complexity execution time increases at an increasing rate.
+Example: Constant time operation inside two nested for-loops, comparing 2 integer lists against each other and a bubble sort.
+
+
+Problems
+===============================
+0. Array.prototype.sort()
+    it has O(n) for sorter array and O(nlogn) for larger array in chrome
+    chrome v8 is using timeSort algorithm.
+    TimSort is a sorting algorithm based on Insertion Sort and Merge Sort.
+    
+1. Input: [[2,5],[3,7]] // check if meeting is overlap
+    output: false
+
+    function checkMeeting(data){
+        data.sort((a,b)=>{return a[0]-b[0]});
+        let end = data[0][1];
+
+        for(let i=0;i<data.length;i++){
+            if(end>data[i][0]) return false;
+            if(end<data[i][1]) end = data[i][1];
+        }
+        return true;
+    }
+
+2. Check palindrome for the number
+
+        function rev(num){
+            let rev = 0;
+            while(num > 0){
+                rev = rev * 10 + num % 10;
+                num = Math.floor(num/10);
+            }
+            return rev;
+        }
+        if(rev(data)==number){
+            return 'palindrome';
+        }
+    
+    data.split('').reverse().join('') === data
+
+3. A building has 100 floors. One of the floors is the highest floor an egg can be dropped from without breaking.
 If an egg is dropped from above that floor, it will break. If it is dropped from that floor or below, it will be completely undamaged and you can drop the egg again.
 Given two identical eggs, how can you find the highest floor an egg can be dropped from without breaking, with as few drops as possible.
 
@@ -13,3 +73,379 @@ The risk is that egg ight get break at 49th and 25th and in that case we will no
 so we must have to start from bottom to make sure it do not break.
 so the worst case would be 49 attempt which is o(n/2 - 1).
 and the best would be o(2)
+
+4. [1,2,3,4,5,6] find if 5 exists.
+========================================
+    solution A. linear search 
+    ---------------------------
+    time complexity is O(n); it will check each and devry element.
+    for(let i =0;i<arr.length;i++){
+        if(elem == arr[i]){
+            return i;
+        }
+    }
+    
+    solution B: Binary search
+    ---------------------------
+    O(log n), when an algorithm has O(log n) running time, it means that as the input size grows, 
+    the number of operations grows very slowly.
+
+    function searchElem(elem, data){
+        data.sort((a,b){return parseInt(a)-parseInt(b)});
+        let start = 0;
+        let end = data.length-1;
+
+        while(start<=end){
+            let middle = Math.floor((start+end)/2);
+
+            if(data[middle] === elem){
+                return middle;
+            }
+            else if(data[middle] < elem){
+                start = middle + 1;
+            } 
+            else{
+                end = middle - 1;
+            }
+        }
+        return -1;
+    }
+
+5. find min and max elementof array.
+    if array is sorted then 1;
+    worst case = best case = O(n)
+    Math.max.apply(null, arr) // simple
+    The apply() method calls the specified function with a given this value, and arguments provided as
+    an array (or an array-like object).
+
+    let arr = [4,34,2,65,10,23,10];
+
+    function findMax(data){
+        let max = data[0];
+        for(let elem=1; elem < data.length; elem++){
+            if(max<data[elem]){
+                max = data[elem];
+            }
+        }
+        return max;
+    }
+    
+    ["{","[","]","}"]
+
+output([8,2,4,7,5,11,15], 9)
+
+
+6. find first pair of number for the traget in Array
+============================================================
+
+let arr = [3,4,5,2,4,7]
+let target = 7;
+
+function check(arr, target){
+  let data = {};
+  
+  for(let [i,v] of arr.entries()){
+    if(data[v] !==undefined){return [data[v],i];}
+    data[target-v] = i;
+  }
+}
+let output = check(arr, target);
+console.log(output);
+
+7. sort an Array
+=========================================================
+function sortArr(arr){
+    for(let i=0;i<arr.length; i++){
+      for(let j=i+1;j<arr.length;j++){
+        let temp = null;
+        if(arr[i]>arr[j]){
+          let temp = arr[i];
+          arr[i] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    }
+    console.log(arr);
+  }
+  sortArr(arr);
+
+8. let input = "3[a]2[bc]";
+==================================================
+let output = "aaabcbc";
+
+function generate(str){
+  let data = str.split("");
+  let output = "";
+  let start = null;
+  let end = null;
+  let multiple = null;
+  for(let [i,v] of data.entries()){
+    if(v === "["){
+        start = i;
+    }
+    else if(v === "]"){
+      end = i;
+      if((multiple === 0 || multiple) && (start === 0 || start) && 
+       (end || end ===0 ) && start < end && multiple < start){
+        let content = str.slice(start+1,end);
+        output += content.repeat(parseInt(data[multiple]));
+      } 
+    }
+    else if(!Number.isNaN(parseInt(v))){
+      multiple = i;
+    } 
+  }
+  console.log(output);
+}
+generate(input);
+
+9. Find missing number from array:
+======================================================
+
+let arr = [1, 2, 4, 3, 7, 8];
+let n = 10;
+
+if single number missing:
+---------------------------
+function findMissing(arr,n){
+    let target = n*(n+1)/2;
+    console.log(target);
+    for(let num of arr){
+      target -= num;
+    }
+    console.log(target);
+  }
+  findMissing(arr,n);
+-----------------------------  
+
+function findMissing(arr,n){
+  let output = [];
+  for(let i=1;i<=n;i++){
+    let item = arr.find(d=>{return (d === i);});
+    if(item === undefined){
+      output.push(i);
+    }
+  }
+  console.log(output);
+}
+findMissing(arr,n);
+
+10. check if string have proper closed brackets in same order
+=================================================================
+
+let input = "[({({[})})]"
+
+function check(str){
+  let obj = {
+    "[": "]",
+    "(": ")",
+    "{": "}"
+  }
+  let valid = [];  // ])}
+  
+  for(let char of str){
+    if(obj[char]){
+      valid.push(obj[char]);
+    } else{
+      if(valid.pop() !== char){return false;}
+    }
+  }
+  return (!valid.length);
+}
+console.log(check(input));
+
+11. check the val and remove from array and return array length
+================================================================
+let input = [3,3,3,3,4], val = 3;
+function modifyData(arr, val){
+  let start = 0;
+  for(let i=0; i<arr.length; i++){
+      if(arr[i]!==val){
+        arr[start]=arr[i];
+        start++
+      }
+  }
+  return start;
+}
+function modifyData(arr, val){
+  for(let i=0; i<arr.length-1; i++){
+      if(arr[i]===val){
+        arr.splice(i,1);
+        i--;
+      }
+  }
+  return arr.length;
+}
+console.log(modifyData(input, val));
+
+12. FInd the buy price at which the maximum profit will be 
+===============================================================
+let input = [7,4,5,3,6,4]
+
+function modifyData(arr){
+    let buy = arr[0];
+    let profit = 0;
+    for(let i =1; i<arr.length-1;i++){
+      let tempProfit = arr[i+1]-arr[i];
+        if(tempProfit > 0){
+          if(arr[i] < buy){
+            buy = arr[i];
+          }
+          if(arr[i+1]-buy > profit){
+            profit = arr[i+1] - buy
+          }
+        }
+    }
+    return [buy,profit];
+}
+console.log(modifyData(input));
+
+13. Number of island
+===============================================================
+const data = [['1','1','1','1','0'],
+              ['1','1','0','1','0'],
+              ['1','1','0','0','0'],
+              ['0','0','0','0','0']];
+const output = 1;
+
+function countIslands(arr){
+  let island = 0;
+  for(let rowIn in arr){
+    for(let colIn in arr[rowIn]){
+      if(arr[rowIn][colIn] === '1'){
+        island++
+        checkIslandLogic(parseInt(rowIn), parseInt(colIn), arr);
+      }
+    }
+  }
+  console.log(island);
+}
+countIslands(data);
+
+function checkIslandLogic(rowIn, colIn, arr){
+  if(arr[rowIn] === undefined || arr[rowIn][colIn] === undefined || 
+    arr[rowIn][colIn] === '0'){
+    return;
+  }
+  arr[rowIn][colIn] = '0';
+  checkIslandLogic(rowIn+1, colIn, arr);
+  checkIslandLogic(rowIn, colIn+1, arr);
+  checkIslandLogic(rowIn-1, colIn, arr);
+  checkIslandLogic(rowIn, colIn-1, arr);
+}
+
+14. Fibonacci
+===============================
+function fibonacciGenerator(n){
+  var fib = []; // Initialize array!
+  fib[0] = 0;
+  fib[1] = 1;
+  for (var i = 2; i < n; i++) {
+    // Next fibonacci number = previous + one before previous
+    // Translated to JavaScript:
+    fib[i] = fib[i - 2] + fib[i - 1];
+  }
+  return fib;
+}
+console.log(fibonacciGenerator(10))
+
+15. reverse array without new array
+=====================================
+function reverse(arr) {
+    for(let i = 0, j = arr.length-1; i < j; i++, j--){
+      console.log(i+" "+j);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+        
+}
+
+
+16. find pair of sum:
+=====================================
+var A = [ 1, 4, 45,3,2, 6, 10, -8 ]
+var n = 7;
+
+function findPair(arr, sum){
+  arr.sort((a,b)=>{return parseInt(a)-parseInt(b);});
+  console.log(arr)
+  let l =0;
+  let r = arr.length;
+  while(l<r){
+    if(arr[l]+arr[r] == sum){
+      console.log([arr[l]+" " +arr[r]]);
+      return;
+    } else if(arr[l]+arr[r] < sum){
+      l++;
+      
+    } else{
+      r--;
+    }
+  }
+}
+
+17. print Star
+===============================
+function printStar(num){
+  for(let i=0; i<num; i++){
+    let rowPrint ="";
+    for(let j=num; j>=0;j--){
+      if(i >= j){
+        rowPrint += "*";
+      } else{
+        rowPrint += " ";
+      }
+    }
+    console.log(rowPrint);
+  }
+}
+
+printStart(5);
+
+18. Cookie Problems leetcode 455
+================================
+Input: g = [1,2], s = [1,2,3]
+Output: 2
+
+var findContentChildren = function(g, s) {
+    let output = 0; // no of children get cookie;
+    let gIndex = 0;
+    g.sort((a,b)=>{return a-b});
+    s.sort((a,b)=>{return a-b});
+    for(let cookie of s){
+        if(cookie >= g[gIndex]){
+            output++;
+            gIndex++;
+        }
+    }
+    return output;
+};
+
+array.reduce method     (acc, val)=>{return acc+val;}
+http vs https             uses ssl protocol to encrypt req/res; window.location.protocol == https
+var let const             
+null vs undefined 
+put vs post         
+call bind             
+event lopp            
+macrotasks:           setTimeout, setInterval, setImmediate, requestAnimationFrame, I/O, UI rendering
+microtasks:           process.nextTick, Promises, queueMicrotask, MutationObserver
+solid principle       single responisbility, open/close, liskov principle, interface seggregation, Dependency
+design pattern        solid, dependecies, singleton, mvc, lazy 
+aot vs JIT            get compiled in browser
+tree shaking          Tree shaking is a technique used to eliminate unused modules from the final bundle file of 
+                      an application, reducing the download size and improving performance.
+cange detection startegy on push: detectChanges(), ngOnchange(change: SimpleChanges), 
+view encapsulation    emulated by default
+directive have tremplate ?? yes component directive
+ how
+prmoise             Promise handle single event when async task completes or fail
+ observable         a Promise starts immediately, an Observable only starts if you subscribe to it. 
+ BehaviourSubject   
+
+ subject          Observer is the interface which is used to feed an observable source:
+                  Subject which implements both the Observable and the Observer interfaces:
+ observable       Observable is for the consumer, it can be transformed and subscribed:
+ReplaySibject:     Subject which keeps a cache of previous values emitted by a source observable and sends them to all new observers immediately on subscription. 
+ replay and BehaviourSubject difference ? 
+ all pair of 2 integer 
+ array.shuffle        randomIndex = Math.floor(Math.random() * currentIndex);

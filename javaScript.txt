@@ -1,3 +1,73 @@
+Questions:
+===========================
+Solid, callback hell, promise, why async await, own replaceAll, Event loop, map, filter, reduce, SET, MAP,
+iterate object?, WekaMap? object.freeze()?, use of Closure, pop up box, Event bubbling vs Capturing,
+how to stop the events? currying, arguments?, spread vs rest vs default, .__proto__ ?
+call, apply and bind, Interface and enum, class, object, inheritance, Destructuring, null vs undefined, 
+shift vs unshift, slice vs splice, split vs join, json.parse, 
+
+1. Object.assign returns new target object and do not create new object.
+2. 
+
+hoisting
+==========================
+Hositing says you can use the variable before declaring it.
+But will give you undefined;
+console.log(ab);
+var ab = 10;
+
+
+what is SOLID principle
+=========================
+The SOLID design pattern is a set of five principles suitable for object-oriented computer programming. 
+It aims to make software design more understandable, flexible and maintainable. 
+	S - Single responsibility principle: A class should have only one task to do
+	O - open-closed principle:  open for extenstion but closed for modification
+	L - Liskov substitute principle:  you want the objects of your subclasses to behave the same way as the 
+		objects of your superclass.
+	I - Interface seggregation principle: client shouldn't be forced to implements the methods of interface which
+		is not needed
+	D - Dependency Inversion: This principle is targeted towards loosely coupling software modules so that 
+		high-level modules are easily reusable and unaffected by changes in low-level modules 
+		(which provide utility features).
+
+
+what is callback hell?
+====================================
+The phenomenon which happens when we nest multiple callbacks within a function is called a callback hell. 
+when we write nested function to fetch the data where functions are dependents then this scenario is callback hell.
+
+to handle it we have promise 
+
+Why to use async await
+======================================
+to simplify the handling of promise:
+if we have 3 promise: promisA, promiseB, promiseC
+
+function resolvePromise(){
+	let data = promiseA()
+	.then(promiseB)
+	.then(promiseC)
+}
+
+async function resolvePromise(){
+	let a = await promiseA();
+	let b = await promiseB(a);
+	let c = await promiseC(b);
+	return c;
+}
+
+why promise
+===========================
+To handle callback hell;
+To handle asynchronous process;
+
+
+reverse a number
+--------------------
+input: 345  output: 543
+(data+"").split('').reverse().join('')
+
 own replaceAll
 -------------------
 var str = "this is a string this is a string this is a string";
@@ -33,11 +103,14 @@ some color code have transparency(background: rgba(0,0,0,0.05);) while some don'
 
 wait for deactivate service while making any http call in angular
 
-how to create dynamic key in object  {[dynamicKey]: 'hello'}
-how to get timestamp (+ new Date())
-how to break foreach of javascript // use some(true) and every(false) && array.find
-check if object has particular key//  'key' in object .hasOwnProperty('')
-return only one error		// use pipe and return only one from error object
+0. how to create dynamic key in object  {[dynamicKey]: 'hello'}
+document.createElement()
+.innerHTML = ''
+.appendChild()
+1. how to get timestamp (+ new Date())
+2. how to break foreach of javascript // use some(true) and every(false) && array.find
+3. check if object has particular key//  'key' in object .hasOwnProperty('')
+4. return only one error		// use pipe and return only one from error object
 
 sorting searching with array of objects
 
@@ -57,7 +130,7 @@ Create Dom element in javascript
 		 exstElement.removeChild(elem);
 
 Array Map VS Filter VS Reduce VS Find
-==================================
+========================================
 	Array.Map
 	-----------
 		It is an array's method which can be used to call a function for each element of an array. for e.g,
@@ -153,17 +226,27 @@ Best Practices/Performances/Code Optimization:
 	7. reduce dom access and assign in variable
 	
 Event Bubbling--Event Capturing and Event Traget
-	event.preventDefault, event.stopPropagation and event.stopImmediatePropagation
+	addEventListener(type, listener, useCapture) ;
+	 divs[i].addEventListener('click', captureFunction, true);
+
+	 event.preventDefault, event.stopPropagation and event.stopImmediatePropagation
+	 preventDefault:	
+	 -------------------
+	 The preventDefault() method cancels the event if it is cancelable, 
+	 meaning that the default action that belongs to the event will not occur.
+	 e.g., you can prevent the hyperlink to be hit 
 	
 Pop up boxes: 3
 	alert("Warning: Leave the site")
-	confirm("click ok or cancel return true or false")
-	prompt("Enter your name", "Default Name") // return name or null
+	var data = confirm("click ok or cancel return true or false")
+	var data =  prompt("Enter your name", "Default Name") // return name or null
 	
 Closure:
 -----------------------
 	closure is used to create public, private and privileged method
-	a closure is simply a function defined within another function. However, the power of closures is derived from the fact that the inner function remembers the environment in which it was created. In other words, the inner function has access to the outer function’s variables and parameters.
+	a closure is simply a function defined within another function. However, the power of closures is derived 
+	from the fact that the inner function remembers the environment in which it was created. 
+	In other words, the inner function has access to the outer function’s variables and parameters.
 	https://www.crockford.com/javascript/private.html
 	
 	function f() {
@@ -181,6 +264,8 @@ Closure:
 		}, 1000);			
 	}
 	
+	1. currying
+	-----------------
 	let multiply = function(x){
 		return function(y){
 			return function(z){
@@ -270,7 +355,7 @@ Call, apply and bind
 	
 	Bind function
 	------------------
-	Bind function return the function where we can preset some value and later we can call that function to get the resilt with preset value.
+	Bind function return the function where we can preset some value and later we can call that function to get the result with preset value.
 	For example:
 	
 
@@ -293,10 +378,38 @@ Call, apply and bind
 
 Inerface and enum
 ------------------------------
+Interface can be used to define the type of object.
+interface Person{
+	firstName: string;
+	lastName: string;
+	fullName();
+}
+class name implements Person{
+	firstName: string;
+	lastName: string;
+	fullName = ()=>{
+		return this.firstName + " " + this.lastName;
+	}
+}
 
+function(data: Person){
+
+}
+
+enums
+=================================
+enums is a data type in typescript and it can be used to define named constants.
+
+enum Direction{
+	Up=1,
+	Down,
+	Left,
+	Right
+}
+console.log(Direction) // Up:1, Down:2, Left:3, Right:4
 
 class and OOP concept in js
--------------------------------	
+--------------------------------	
 	Class before ES2015:-
 		function Person(first, last){
 			this.firstName = first;
@@ -327,6 +440,7 @@ class and OOP concept in js
 		}
 		
 		arrow function:
+		()=>{}, arrow dont have its own this object and it refers to the parent element.
 		
 			
 	Methods in class:
@@ -341,8 +455,27 @@ class and OOP concept in js
 			
 	Inheritance:
 		JavaScript only supports single class inheritance
-		Inheritance is a process where we define the parent and child class where child class inherits parent class property.
-		
+		Inheritance is a process where we define the parent and child class, where child class inherits parent class property.
+		class Car {   
+			Color:string     
+			constructor(color:string) {   
+				this.Color = color  
+			}   
+		}   
+		class Audi extends Car {   
+			Price: number  
+			constructor(color: string, price: number) {  
+				super(color);  
+				this.Price = price;  
+			}  
+			display():void {  
+				console.log("Color of Audi car: " + this.Color);  
+				console.log("Price of Audi car: " + this.Price);  
+			}  
+		}
+		let obj = new Audi(" Black", 8500000 );  
+		obj.display();  
+		----------------------------------
 		function Person(){
 			this.name = 'rahul';
 		}
@@ -366,11 +499,11 @@ class and OOP concept in js
 		In the previous example, Student does not need to know how the Person class’s walk() method is implemented, but still can use that method; the Student class doesn’t need to explicitly define that method unless we want to change it. This is called encapsulation, by which every class inherits the methods of its parent and only needs to define things it wishes to change.	
 		
 	Polymorphism and Abstraction:
-		
+		Inheritance: method overloading
 		
 		
 ES2020:
----------------------------		
+--------------------------------------------
 	1. Default, Rest & Spread operator:
 		JavaScript function allows any number of arguments to be passed regardless of number of parameters declared in function definition.
 		
@@ -472,9 +605,14 @@ ES2020:
 	7. Set and Map instead of Array and Object:
 		"Set" can be used instead of Array as primitive data to store the iterable object.
 		It do not add duplicate value, if any present in iterable it will simply remove that.
+
+		======has, add, delete, size=========
 		
 		Set Operations:
 			let mySet = new Set()	or 	new Set([1,2,3,4,5])
+			for(let i of mySet){
+				console.log(i);
+			}
 			mySet.add(45);
 			mySet.add('hey you');
 			mySet.add({key: value})
@@ -517,12 +655,14 @@ ES2020:
 
 			
 		Shit/unShift method:
-		
+		==============================
+		arr.shift() method will first remove and return the first element of array.
+		arr.unshift(2,3) method reuires arguments, it add the arguments at the start of the array.
 		
 		
 	8. arrow function:
 		Arrow function don't have it's own scope it referes to scope where it get defined.
-		Arriw function dont have its own this so we can se it to set the value into current scope of fucntion where it has been defined.
+		Arriw function dont have its own this so we can set the value into current scope of fucntion where it has been defined.
 		let sum = (...arg)=>{arg.reduce((total, item)=>total+=item)}
 		alert(sum([1,3,4,56,65,6,4]));
 	

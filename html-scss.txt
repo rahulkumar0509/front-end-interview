@@ -1,0 +1,67 @@
+Centre align vertical and horizontal
+====================================
+position: absolute;
+margin-top: 50%;
+margin-left: calc(50% - 50px);
+
+SCSS
+=========================
+1. what is mixin?
+    @mixin directive can be used to define css code which will be reused in the application.
+    To include the mixin we have to use @import directive 
+
+    @mixing base-design{
+        color: black;
+        background-color: white;
+        font-size: 14px;
+    }
+
+    .user-info{
+        @include base-design;
+    }
+
+2. what is @import
+    @import allows you to include one scss file into another which means you can define common css code 
+    in common files and reuse it.
+
+    @import "variables" // no need of extension
+
+3. what is @extend
+    The @extend directive lets you share a set of CSS properties from one selector to another.
+
+    .button{
+        padding: 20px;
+        font-size: 14px;
+    }
+    .primary-button{
+        @extend .button;
+        color: white;
+        background-color: red;
+    }
+    .secondary-button{
+        @extend .button
+        color: red;
+        background-color: white;
+    }
+
+4. Sass function
+    There are predefined sass function which can be used perform some actions.
+    for e..g, quote(Hello world!)   // "Hello world!"
+
+5. variable in sass
+    $bgcolor: lightblue;
+
+    use:
+    color: $bgcolor;
+
+    h1 {
+        $myColor: green !global;  // it will be available globally
+        color: $myColor;
+    }
+
+
+Sass stands for Syntactically Awesome Stylesheet
+Sass is an extension to CSS
+Sass is a CSS pre-processor
+Sass is completely compatible with all versions of CSS
+Sass reduces repetition of CSS and therefore saves time
